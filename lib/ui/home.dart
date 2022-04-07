@@ -1,5 +1,6 @@
+import 'package:bkp/contansts.dart';
 import 'package:flutter/material.dart';
-
+import 'package:flutter/src/painting/image_resolution.dart';
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
 
@@ -12,9 +13,32 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Scaffold(
-      body: Stack(
+      body: Stack( 
         children: <Widget>[
-          Container(height: size.height),
+          Container(
+            height: size.height * .25,
+            decoration: BoxDecoration(
+              color: kBackgroudColor5,
+              image: DecorationImage(
+                image: AssetImage('icons/ilus.png'), 
+                ), 
+             ),
+            ),
+            SafeArea(
+              child: Column(
+                children: <Widget>[
+                  Container(
+                    height: 52,
+                    width: 52,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(Icons.menu_rounded,
+                    color: Colors.black,
+                    size: 24.0,),
+                  ),
+                ],
+              ))
         ],
       ),
     );
