@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:bkp/contansts.dart';
 import 'package:bkp/ui/home.dart';
+import './auth/login.dart';
 
 void main() async {
   await Future.delayed(Duration(seconds: 3));
@@ -20,14 +21,8 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primaryColor: kBackgroudColor,
-        scaffoldBackgroundColor: kBackgroudColor,
-      ),
-      home: Home(),
+    // return
+    return LoginScreen(
     );
   }
 }

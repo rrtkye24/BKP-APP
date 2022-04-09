@@ -28,6 +28,7 @@ class _HomeState extends State<Home> {
               child: Column(
                 children: <Widget>[
                   Container(
+                    alignment: Alignment.topRight ,
                     height: 52,
                     width: 52,
                     decoration: BoxDecoration(
