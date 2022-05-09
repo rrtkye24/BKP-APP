@@ -1,12 +1,16 @@
 import 'package:bkp/auth/flutterfire.dart';
 import 'package:bkp/home/home.dart';
-import 'package:bkp/ui/home.dart';
+// import 'package:bkp/ui/home.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:provider/provider.dart';
+import '../services/auth_services.dart';
+// import '../home/laporan_barang.dart';
+
 class LoginWidget extends StatefulWidget {
   const LoginWidget({Key? key}) : super(key: key);
 
@@ -23,12 +27,14 @@ class _LoginWidgetState extends State<LoginWidget> {
   bool passwordVisibility = false;
   TextEditingController passwordConfirmController = TextEditingController();
   bool passwordConfirmVisibility = false;
-  TextEditingController email = TextEditingController();
+  TextEditingController emails = TextEditingController();
   TextEditingController password = TextEditingController();
   bool passwordLoginVisibility = true;
-    final _fire = Firebase.initializeApp;
-    final _auth = FirebaseAuth.instance;
+  final _fire = Firebase.initializeApp;
+  final _auth = FirebaseAuth.instance;
   // final _auth = FirebaseAuth.instance;
+//  final auth = getAuth();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -121,7 +127,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                                               EdgeInsetsDirectional.fromSTEB(
                                                   0, 20, 0, 0),
                                           child: TextFormField(
-                                            controller: email,
+                                            controller: emails,
                                             keyboardType:
                                                 TextInputType.emailAddress,
                                             decoration: InputDecoration(
@@ -167,7 +173,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                                               fontWeight: FontWeight.normal,
                                             ),
                                             onSaved: (emailsignin) {
-                                              email.text = emailsignin!;
+                                              emails.text = emailsignin!;
                                             },
                                             textInputAction:
                                                 TextInputAction.next,
@@ -242,6 +248,8 @@ class _LoginWidgetState extends State<LoginWidget> {
                                             onSaved: (pass) {
                                               password.text = pass!;
                                             },
+                                            textInputAction:
+                                                TextInputAction.done,
                                           ),
                                         ),
                                         Padding(
@@ -250,7 +258,23 @@ class _LoginWidgetState extends State<LoginWidget> {
                                                   0, 24, 0, 0),
                                           child: RaisedButton(
                                             onPressed: () async {
-                                              signIn(email.text, password.text);
+                                              // signIn(
+                                              //     email.text, password.text);
+                                              final String email =
+                                                  emails.text.trim();
+                                              final String passwords =
+                                                  password.text.trim();
+
+                                              if (email.isEmpty) {
+                                                print("Email is Empty");
+                                              } else {
+                                                if (passwords.isEmpty) {
+                                                  print("Password is Empty");
+                                                } else {
+                                                  signIn(email, passwords);
+                                                }
+                                              }
+
                                               // await signUp();
                                               //  SignInSignUpResult result = await AuthServices.createUser(
                                               // email: emailAddressLoginController.text, pass: passwordLoginController.text);
@@ -348,26 +372,30 @@ class _LoginWidgetState extends State<LoginWidget> {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceEvenly,
                                             children: [
-                                              Container(
-                                                width: 50,
-                                                height: 50,
-                                                decoration: BoxDecoration(
-                                                  color: Color(0xFF0F1113),
-                                                  boxShadow: [
-                                                    BoxShadow(
-                                                      blurRadius: 5,
-                                                      color: Color(0x3314181B),
-                                                      offset: Offset(0, 2),
-                                                    )
-                                                  ],
-                                                  shape: BoxShape.circle,
-                                                ),
-                                                alignment:
-                                                    AlignmentDirectional(0, 0),
-                                                child: FaIcon(
-                                                  FontAwesomeIcons.google,
-                                                  color: Colors.white,
-                                                  size: 24,
+                                              GestureDetector(
+                                                child: Container(
+                                                  width: 50,
+                                                  height: 50,
+                                                  decoration: BoxDecoration(
+                                                    color: Color(0xFF0F1113),
+                                                    boxShadow: [
+                                                      BoxShadow(
+                                                        blurRadius: 5,
+                                                        color:
+                                                            Color(0x3314181B),
+                                                        offset: Offset(0, 2),
+                                                      )
+                                                    ],
+                                                    shape: BoxShape.circle,
+                                                  ),
+                                                  alignment:
+                                                      AlignmentDirectional(
+                                                          0, 0),
+                                                  child: FaIcon(
+                                                    FontAwesomeIcons.google,
+                                                    color: Colors.white,
+                                                    size: 24,
+                                                  ),
                                                 ),
                                               ),
                                             ],
@@ -510,6 +538,8 @@ class _LoginWidgetState extends State<LoginWidget> {
                                             onSaved: (pass) {
                                               passwordController.text = pass!;
                                             },
+                                            textInputAction:
+                                                TextInputAction.next,
                                           ),
                                         ),
                                         Padding(
@@ -583,6 +613,8 @@ class _LoginWidgetState extends State<LoginWidget> {
                                               passwordConfirmController.text =
                                                   passcon!;
                                             },
+                                            textInputAction:
+                                                TextInputAction.done,
                                           ),
                                         ),
                                         Padding(
@@ -591,7 +623,60 @@ class _LoginWidgetState extends State<LoginWidget> {
                                                   0, 24, 0, 0),
                                           child: RaisedButton(
                                             onPressed: () {
-                                              print('Button pressed ...');
+                                              final String email =
+                                                  emailAddressController.text
+                                                      .trim();
+                                              final String passwords =
+                                                  passwordController.text
+                                                      .trim();
+                                              final String paswordConfirm =
+                                                  passwordConfirmController.text
+                                                      .trim();
+                                              if (email.isEmpty) {
+                                                Fluttertoast.showToast(
+                                                    msg: "Email Kosong",
+                                                    toastLength:
+                                                        Toast.LENGTH_SHORT,
+                                                    gravity:
+                                                        ToastGravity.CENTER,
+                                                    timeInSecForIosWeb: 1,
+                                                    backgroundColor:
+                                                        Colors.brown[200],
+                                                    textColor: Colors.black,
+                                                    fontSize: 16.0);
+                                                print("email kosong!");
+                                              } else {
+                                                if (passwords.isEmpty) {
+                                                  Fluttertoast.showToast(
+                                                      msg: "Password kosong",
+                                                      toastLength:
+                                                          Toast.LENGTH_SHORT,
+                                                      gravity:
+                                                          ToastGravity.CENTER,
+                                                      timeInSecForIosWeb: 1,
+                                                      backgroundColor:
+                                                          Colors.brown[200],
+                                                      textColor: Colors.black,
+                                                      fontSize: 16.0);
+                                                } else {
+                                                  if (paswordConfirm.isEmpty) {
+                                                    Fluttertoast.showToast(
+                                                        msg:
+                                                            "konfirmasi Password kosong",
+                                                        toastLength:
+                                                            Toast.LENGTH_SHORT,
+                                                        gravity:
+                                                            ToastGravity.CENTER,
+                                                        timeInSecForIosWeb: 1,
+                                                        backgroundColor:
+                                                            Colors.brown[200],
+                                                        textColor: Colors.black,
+                                                        fontSize: 16.0);
+                                                  } else {
+                                                    signUp(email, passwords);
+                                                  }
+                                                }
+                                              }
                                             },
                                             child: Text('Create Account'),
                                             // text: 'Create Account',
@@ -713,5 +798,21 @@ class _LoginWidgetState extends State<LoginWidget> {
             })),
           },
         );
+  }
+
+  void signUp(String email, String password) async {
+    await _auth
+        .createUserWithEmailAndPassword(email: email, password: password)
+        .then(
+          (uid) => {
+            Fluttertoast.showToast(msg: "Register Successfully"),
+            Navigator.push(context, MaterialPageRoute(builder: (context) {
+              return HomePageWidget();
+            })),
+          },
+        );
+  }
+  void signOut() async {
+    await FirebaseAuth.instance.signOut();
   }
 }
