@@ -12,6 +12,7 @@ class InputTextField extends StatelessWidget {
    final Function onChange;
   final bool password;
 
+  @override
   Widget build(BuildContext context) {
     return Form(
       child: TextFormField(
@@ -19,7 +20,7 @@ class InputTextField extends StatelessWidget {
         cursorColor: Colors.grey,
         decoration: InputDecoration(
           labelText: label,
-          labelStyle: TextStyle(color: Colors.grey),
+          labelStyle: const TextStyle(color: Colors.grey),
           border: UnderlineInputBorder(
               borderSide: BorderSide(
             color: mPrimaryColor,
@@ -30,7 +31,7 @@ class InputTextField extends StatelessWidget {
             color: mPrimaryColor,
             width: 2,
           )),
-          enabledBorder: UnderlineInputBorder(
+          enabledBorder: const UnderlineInputBorder(
               borderSide: BorderSide(
             color: Colors.grey,
             width: 0.5,

@@ -1,6 +1,5 @@
 import 'package:bkp/contansts.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/painting/image_resolution.dart';
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
 
@@ -17,7 +16,7 @@ class _HomeState extends State<Home> {
         children: <Widget>[
           Container(
             height: size.height * .25,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: kBackgroudColor5,
               image: DecorationImage(
                 image: AssetImage('icons/ilus.png'), 
@@ -31,10 +30,10 @@ class _HomeState extends State<Home> {
                     alignment: Alignment.topRight ,
                     height: 52,
                     width: 52,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       shape: BoxShape.circle,
                     ),
-                    child: Icon(Icons.menu_rounded,
+                    child: const Icon(Icons.menu_rounded,
                     color: Colors.black,
                     size: 24.0,),
                   ),

@@ -1,23 +1,19 @@
+import 'package:bkp/auth/google_sign_in.dart';
 import 'package:bkp/home/home.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:bkp/contansts.dart';
-import 'package:bkp/ui/home.dart';
-import './login/login_screen.dart';
 import './auth/login.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutterfire_ui/auth.dart';
-import './auth/login.dart';
 import './home/home.dart';
 import 'package:provider/provider.dart';
-import 'package:bkp/services/auth_services.dart';
+import 'auth/google_sign_in.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  await Future.delayed(Duration(seconds: 3));
-  runApp(MyApp());
+  await Future.delayed(const Duration(seconds: 3));
+  runApp(const MyApp());
 }
 
 // class MyApp extends StatelessWidget {
@@ -66,7 +62,7 @@ void main() async {
 //   }
 // }
 class MyApp extends StatelessWidget {
-  MyApp({Key? key}) : super(key: key);
+  const MyApp({Key? key}) : super(key: key);
   // hexColor(String colorhexcode) {
   //   String colornew = '0xff' + colorhexcode;
   //   colornew = colornew.replaceAll('#', '');
@@ -77,47 +73,58 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // return
-    return MaterialApp(
-      title: 'BKP"S APP',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        scaffoldBackgroundColor: kBackgroudColor,
+    return ChangeNotifierProvider(
+      create: (context) => GoogleSignInProvider(),
+      child: MaterialApp(
+        title: 'BKP"S APP',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          scaffoldBackgroundColor: kBackgroudColor,
+        ),
+        home: const Auth(),
       ),
-      home: Auth(),
     );
   }
 }
+
+// class Auth extends StatelessWidget {
+//   const Auth({Key? key}) : super(key: key);
+//   @override
+//   Widget build(BuildContext context) {
+//     final initialRoute = FirebaseAuth.instance.currentUser;
+//     if (initialRoute != null) {
+//       // return HomePageWidget();
+//       return LoginWidget();
+//     } else {
+//       return LoginWidget();
+//     }
+//   }
+// }
 
 class Auth extends StatelessWidget {
   const Auth({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final user = FirebaseAuth.instance.currentUser;
-    final initialRoute = FirebaseAuth.instance.currentUser;
-    if (initialRoute != null) {
-      return HomePageWidget();
-    } else {
-      return LoginWidget();
-    }
-    ;
+    return Scaffold(
+      body: StreamBuilder(
+          stream: FirebaseAuth.instance.authStateChanges(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            } else if (snapshot.hasData) {
+              return const Center(
+                child: HomePageWidget(),
+              );
+            } else if (snapshot.hasError) {
+              return const Center(
+                child: Text('Something went wrong '),
+              );
+            } else {
+              return const LoginWidget();
+            }
+          }),
+    );
   }
 }
-
-// class MainPage extends StatelessWidget {
-//   const MainPage({Key? key}) : super(key: key);
-
-//   @override
-//   Widget build(BuildContext context) => StreamBuilder<User?>(
-//       stream: FirebaseAuth.instance.authStateChanges(),
-//       builder: (context, snapshot) {
-//         if (snapshot.hasData) {
-//           return Home();
-//         } else {
-//           return SignInScreen(
-//             providerConfigs: [
-//               EmailProviderConfiguration(),
-//             ],
-//           );
-//         }
-//       });
-// }

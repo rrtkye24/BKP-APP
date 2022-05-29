@@ -1,4 +1,3 @@
-import 'dart:ui';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -30,8 +29,8 @@ class LoginScreen extends StatelessWidget {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          WelcomeBack(),
-          LoginForm(),
+          const WelcomeBack(),
+          const LoginForm(),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 30),
             alignment: Alignment.centerRight,
@@ -40,10 +39,10 @@ class LoginScreen extends StatelessWidget {
               style: TextStyle(color: mPrimaryColor),
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 60,
           ),
-          LoginButton(),
+          const LoginButton(),
           Container(
             padding: const EdgeInsets.symmetric(
               horizontal: 30,
@@ -51,8 +50,8 @@ class LoginScreen extends StatelessWidget {
             ),
             alignment: Alignment.center,
             child: RichText(
-              text: TextSpan(style: TextStyle(color: Colors.grey), children: [
-                TextSpan(text: 'Don\'t have an account? '),
+              text: TextSpan(style: const TextStyle(color: Colors.grey), children: [
+                const TextSpan(text: 'Don\'t have an account? '),
                 TextSpan(
                   text: 'Register',
                   style: TextStyle(

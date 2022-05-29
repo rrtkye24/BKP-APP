@@ -19,7 +19,7 @@ class LoginForm extends StatelessWidget {
             label: 'Email',
             onChange: (value) {},
           ),
-          SizedBox(height: 16,),
+          const SizedBox(height: 16,),
           InputTextField(
             label: 'Password',
             password: true,
